@@ -16,6 +16,15 @@ public class HttpController {
         System.out.println(Tag+"setter : "+m.getId());
         return "lombok finish";
     }
+    @GetMapping("/http/lombokbuilder")
+    public String lombokTestbuilder(){
+        Member m = Member.builder().username("buildertest").password("0000").email("build@naver.com").build();
+
+        System.out.println(Tag+"getter : "+m.getUsername());
+        m.setUsername("5000");
+        System.out.println(Tag+"setter : "+m.getUsername());
+        return "lombok finish";
+    }
     @GetMapping("/http/get")
     // 인터넷 브라우저 요청은 무조건 get 요청뿐
     public String getTest(Member m){

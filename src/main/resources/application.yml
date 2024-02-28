@@ -1,6 +1,36 @@
+server:
+  port: 8000
+  servlet:
+    #ex) http://localhost:8000/blog/http/lombok
+    context-path: /blog
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 spring:
+  #jsp 파일이 들어오면 기본경로 설정
+  mvc:
+   view:
+     prefix: /WEB-INF/views/
+     suffix: .jsp
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
     username: oosulz
     password: Fnalsjtm12!
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false

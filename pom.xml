@@ -24,12 +24,12 @@
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency> -->
 
-		<!-- JSP 템플릿 엔진
+		<!--JSP 템플릿 엔진-->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-		-->
+
 		<!-- JSTL -->
 		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
 		<dependency>
