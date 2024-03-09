@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
+
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트 연결된 DB의 연결된 전략 따라감
     private int id; //시퀀스,auto_increment
+
     @Column(nullable = false, length = 200)
     private String content;
 

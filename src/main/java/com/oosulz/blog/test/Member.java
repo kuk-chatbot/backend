@@ -1,4 +1,4 @@
-package com.oosulz.blog.repository;
+package com.oosulz.blog.test;
 
 import lombok.*;
 

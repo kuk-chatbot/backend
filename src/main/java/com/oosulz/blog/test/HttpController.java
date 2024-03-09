@@ -1,6 +1,5 @@
-package com.oosulz.blog.controller;
+package com.oosulz.blog.test;
 
-import com.oosulz.blog.repository.Member;
 import org.springframework.web.bind.annotation.*;
 
 // 사용자가 요청한 데이터로 응답

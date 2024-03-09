@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -22,10 +22,13 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트 연결된 DB의 연결된 전략 따라감
     private int id; //시퀀스,auto_increment
+
     @Column(nullable = false, length = 100)
     private String title; //게시물 제목
+
     @Lob // 섬머노트 <html> 디자인
     private String content;
+
     @ColumnDefault("0")
     private String count; // 조회수
 
