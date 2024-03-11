@@ -1,2 +1,0 @@
-### 자동차 경주 이력 조회 API
-GET http://localhost:8080/http/get?id=10&username=ssar
