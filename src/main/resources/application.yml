@@ -2,7 +2,7 @@ server:
   port: 8000
   servlet:
     #ex) http://localhost:8000/blog/http/lombok
-    context-path: /blog
+    context-path: /
     encoding:
       charset: UTF-8
       enabled: true
@@ -11,9 +11,9 @@ server:
 spring:
   #jsp 파일이 들어오면 기본경로 설정
   mvc:
-   view:
-     prefix: /WEB-INF/views/
-     suffix: .jsp
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,3 +34,6 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+oosulz:
+  key: blog-test

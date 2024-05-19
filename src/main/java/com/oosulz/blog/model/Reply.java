@@ -1,5 +1,7 @@
 package com.oosulz.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.oosulz.blog.dto.ReplySaveRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +39,11 @@ public class Reply {
 
     @CreationTimestamp //자동입력
     private Timestamp createDate;
+
+    public void update(User user, Board board,String content){
+        setUser(user);
+        setBoard(board);
+        setContent(content);
+    }
 
 }
