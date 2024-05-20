@@ -19,8 +19,8 @@
         </div>
 
         <div class="form-group">
-            <label for="email">Email address:</label>
-            <input type="text" class="form-control" id="email" placeholder="Enter Email" name="email" required>
+            <label for="name">name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
         </div>

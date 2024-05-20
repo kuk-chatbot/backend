@@ -16,8 +16,8 @@
         </div>
 
         <div class="form-group">
-            <label for="email">Email address:</label>
-            <input type="text" value="${principal.user.email}" class="form-control" id="email" placeholder="Enter Email" name="email">
+            <label for="name">Name:</label>
+            <input type="text" value="${principal.user.name}" class="form-control" id="name" placeholder="Enter Name" name="name">
         </div>
 
     </form>

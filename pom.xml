@@ -8,11 +8,11 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.oosulz</groupId>
-	<artifactId>blog</artifactId>
+	<groupId>com.kuk</groupId>
+	<artifactId>chatbot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>blog</name>
-	<description>blog</description>
+	<name>chatbot</name>
+	<description>chatbot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

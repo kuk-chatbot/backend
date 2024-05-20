@@ -16,7 +16,7 @@ let index = {
         let data = {
             username: $("#username").val(),
             password: $("#password").val(),
-            email: $("#email").val()
+            name: $("#name").val()
         }
 
         //console.log(data);
@@ -81,7 +81,7 @@ let index = {
             id: $("#id").val(),
             username: $("#username").val(),
             password: $("#password").val(),
-            email: $("#email").val()
+            name: $("#name").val()
         };
 
         $.ajax({
