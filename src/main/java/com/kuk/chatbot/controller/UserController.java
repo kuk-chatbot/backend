@@ -42,6 +42,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/auth/sign-up")
     public String signUp(){
 

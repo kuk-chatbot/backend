@@ -14,9 +14,15 @@ let index = {
     save: function(){
         //alert('user의 save함수 호출됨');
         let data = {
+            id: $("#id").val(),
             username: $("#username").val(),
             password: $("#password").val(),
-            name: $("#name").val()
+            name: $("#name").val(),
+            role: $("#role").val(),
+            userlimit: $("#userlimit").val(),
+            memory: $("#memory").val(),
+            cores: $("#cores").val(),
+            sockets: $("#sockets").val()
         }
 
         //console.log(data);
@@ -81,7 +87,12 @@ let index = {
             id: $("#id").val(),
             username: $("#username").val(),
             password: $("#password").val(),
-            name: $("#name").val()
+            name: $("#name").val(),
+            role: $("#role").val(),
+            userlimit: $("#userlimit").val(),
+            memory: $("#memory").val(),
+            cores: $("#cores").val(),
+            sockets: $("#sockets").val()
         };
 
         $.ajax({
