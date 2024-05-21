@@ -50,7 +50,7 @@ public class SecurityConfig {
         // 로그인을 가로채서 대신 로그인
         http.formLogin(
                 f -> {
-                    f.loginPage("/auth/loginForm").loginProcessingUrl("/auth/loginProc").defaultSuccessUrl("/").failureUrl("/auth/loginForm");
+                    f.loginPage("/auth/sign-in").loginProcessingUrl("/auth/loginProc").defaultSuccessUrl("/").failureUrl("/auth/sign-in");
                 });
 
         //인증 주소 설정

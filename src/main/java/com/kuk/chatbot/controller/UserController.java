@@ -42,16 +42,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/auth/joinForm")
-    public String joinForm(){
+    @GetMapping("/auth/sign-up")
+    public String signUp(){
 
-        return "user/joinForm";
+        return "user/sign-up";
     }
 
-    @GetMapping("/auth/loginForm")
-    public String loginForm(){
+    @GetMapping("/auth/sign-in")
+    public String signIn(){
 
-        return "user/loginForm";
+        return "user/sign-in";
     }
 
 
