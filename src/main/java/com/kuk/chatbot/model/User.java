@@ -31,8 +31,7 @@ public class User {
 
     //@ColumnDefault("user")   
     @Enumerated(EnumType.STRING)
-    private RoleType role; // ADMIN,USER로 나뉨
-
+    private RoleType role; // Personal,Enterprise 나뉨
     private Integer userlimit;
     private Integer memory;
     private Integer cores;
