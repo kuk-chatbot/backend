@@ -30,7 +30,7 @@ public class Answer {
     private User user;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGBLOB")
     private byte[] resultImage;
 
     private Integer cpuFanNoScrews;
