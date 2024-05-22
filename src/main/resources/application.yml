@@ -35,5 +35,9 @@ spring:
     serialization:
       fail-on-empty-beans: false
 
+  devtools:
+    restart:
+      enabled: false
+
 kuk:
   key: chatbot-test
