@@ -41,6 +41,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li>
                     <li class="nav-item"><a class="nav-link" href="/user/updateForm">회원정보</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/upload">사진분석</a></li>
                     <li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
                 </ul>
             </c:otherwise>
