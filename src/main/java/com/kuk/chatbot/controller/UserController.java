@@ -55,17 +55,9 @@ public class UserController {
         return "user/sign-in";
     }
 
-
-
-
-
-
-
-
-    @GetMapping("/user/updateForm")
-    public String updateForm(@AuthenticationPrincipal PrincipalDetail principal){
-
-        return "user/updateForm";
+    @GetMapping("/account")
+    public String account(@AuthenticationPrincipal PrincipalDetail principal){
+        return "account";
     }
 
 }

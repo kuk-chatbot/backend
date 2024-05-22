@@ -7,7 +7,7 @@ let index = {
         //    this.login();
         //});
         $("#btn-update").on("click", ()=>{ // function(){} , ()=>{} this를 바인딩하기 위해서!!
-            this.update();
+            this.accountupdate();
         });
     },
 
@@ -81,7 +81,7 @@ let index = {
 
 
 
-    update: function(){
+    accountupdate: function(){
         //alert('user의 save함수 호출됨');
         let data = {
             id: $("#id").val(),
