@@ -1,8 +1,10 @@
 package com.kuk.chatbot.api;
+import com.kuk.chatbot.dto.ResponseDto;
 import com.kuk.chatbot.model.User;
 import com.kuk.chatbot.service.QuestionService;
 import com.kuk.chatbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +28,9 @@ public class imageApiController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("image") MultipartFile file,
-                                   @RequestParam("modelName") String modelName,
-                                   @RequestParam("cause") String cause) {  // 매개변수 이름 변경
+    public ResponseDto<Integer> handleFileUpload(@RequestParam("image") MultipartFile file,
+                                                 @RequestParam("modelName") String modelName,
+                                                 @RequestParam("cause") String cause) {  // 매개변수 이름 변경
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
@@ -57,13 +59,13 @@ public class imageApiController {
 
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                return "File uploaded and Python script executed successfully";
+                return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
             } else {
-                return "Failed to execute Python script, exit code: " + exitCode;
+                return new ResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), 0);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return "Failed to upload file and execute Python script";
+            return new ResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), 0);
         }
     }
 }
