@@ -36,12 +36,14 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 
             for (String param : params) {
                 String[] keyValue = param.split("=");
-                String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
-                String value = URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8);
-                if ("username".equals(key)) {
-                    username = value;
-                } else if ("password".equals(key)) {
-                    password = value;
+                if (keyValue.length == 2) {
+                    String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
+                    String value = URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8);
+                    if ("username".equals(key)) {
+                        username = value;
+                    } else if ("password".equals(key)) {
+                        password = value;
+                    }
                 }
             }
 
