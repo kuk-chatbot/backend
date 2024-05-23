@@ -37,16 +37,24 @@ public class UserService {
     }
 
     @Transactional
-    public void 회원수정(User user){
-        User persistance = userRepository.findById(user.getId()).orElseThrow(()->{
-            return new IllegalArgumentException("회원 찾기 실패");
+    public User 회원아이디찾기(int id){
+        User user = userRepository.findById(id).orElseGet(()->{
+            return new User();
         });
+        return user;
+    }
 
+    @Transactional
+    public void 회원수정(User user){
+        User persistance = userRepository.findById(user.getId()).orElseThrow(()-> new IllegalArgumentException("회원 찾기 실패"));
+        persistance.setName(user.getName());
+        persistance.setRole(user.getRole());
         String rawPassword = user.getPassword();
         String encPassword = encoder.encode(rawPassword);
         persistance.setPassword(encPassword);
-        persistance.setName(user.getName());
-
+        persistance.setUserlimit(user.getUserlimit());
+        persistance.setMemory(user.getMemory());
+        persistance.setCores(user.getCores());
+        persistance.setSockets(user.getSockets());
     }
-
 }
