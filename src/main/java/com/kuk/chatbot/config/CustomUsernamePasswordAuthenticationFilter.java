@@ -44,21 +44,23 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException {
-        // 성공적인 인증 후 JSON 응답
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("token", "여기에 JWT 토큰을 추가하세요"); // JWT 토큰 생성 후 추가
+        System.out.println("Authentication successful for user: " + authResult.getName());
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 200);
+        responseBody.put("data", 1); // 필요에 따라 다른 데이터를 추가할 수 있습니다
         response.setContentType("application/json");
         response.getWriter().write(objectMapper.writeValueAsString(responseBody));
     }
 
+
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException {
-        // 실패한 인증 후 JSON 응답
-        Map<String, String> responseBody = new HashMap<>();
+        System.out.println("Authentication failed: " + failed.getMessage());
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
         responseBody.put("errorType", "Bad Request");
         responseBody.put("msg", "에러 발생");
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setContentType("application/json");
         response.getWriter().write(objectMapper.writeValueAsString(responseBody));
     }
