@@ -11,49 +11,70 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration // IoC 빈등록
-@EnableWebSecurity // 시큐리티 필터가 등록
+import java.util.Arrays;
+
+@Configuration
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
     private PrincipalDetailService principalDetailService;
 
-
+    @Autowired
+    private AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     BCryptPasswordEncoder encode() {
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationManager authenticationManager(
-            AuthenticationConfiguration auth) throws Exception {
-        return auth.getAuthenticationManager();
+    AuthenticationManager authenticationManager() throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
-
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //csrf 토큰 비활성화 (테스트 시 걸어두는게 좋음)
-        http.csrf(c -> c.disable());
+        http.csrf(csrf -> csrf.disable());
 
-        http.authorizeHttpRequests(a -> {
-            a.requestMatchers(RegexRequestMatcher.regexMatcher("/board/\\d+"+"/dummy/\\d+")).permitAll()
-                    .requestMatchers("/users/**", "/board/**").authenticated()
-                    .anyRequest().permitAll();
-        });
-        // 스프링 시큐리티가 해당 주소로 요청 오는
-        // 로그인을 가로채서 대신 로그인
-        http.formLogin(
-                f -> {
-                    f.loginPage("/auth/sign-in").loginProcessingUrl("/auth/sign-in").defaultSuccessUrl("/").failureUrl("/auth/sign-in");
-                });
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(RegexRequestMatcher.regexMatcher("/dashboard/\\d+" + "/dummy/\\d+")).permitAll()
+                .requestMatchers("/users/**", "/dashboard/**").authenticated()
+                .anyRequest().permitAll()
+        );
 
-        //인증 주소 설정
+        // 커스텀 UsernamePasswordAuthenticationFilter 추가
+        http.addFilterBefore(customUsernamePasswordAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+
+        // CORS 설정 추가
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         return http.build();
+    }
+
+    @Bean
+    public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+        CustomUsernamePasswordAuthenticationFilter filter = new CustomUsernamePasswordAuthenticationFilter(authenticationManager);
+        filter.setFilterProcessesUrl("/auth/sign-in");
+        return filter;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
