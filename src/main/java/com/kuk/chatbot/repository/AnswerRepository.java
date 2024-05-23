@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Integer> {
 
-    @Query(value="select C.name, B.cause, B.modelName, A.cpuFanNoScrews, A.cpuFanPortDetached, A.cpuFanScrewsLoose, A.incorrectScrews, A.looseScrews, A.noScrews, A.scratch " +
+    @Query(value="select C.name, B.cause, B.modelName, A.cpuFanNoScrews, A.cpuFanPortDetached, A.cpuFanScrewsLoose, A.incorrectScrews, A.looseScrews, A.noScrews, A.scratch, B.id " +
             "from " +
             "(select id, name from user) as C, " +
             "(select id, userId, cause, modelName from question) as B, " +
@@ -19,7 +19,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
             "where C.id = B.userId and B.id = A.questionId and B.userId = :id", nativeQuery=true)
     List<Object[]> loadSummaryByUserId(@Param("id") int id);
 
-    @Query(value="select C.name, B.cause, B.modelName, A.cpuFanNoScrews, A.cpuFanPortDetached, A.cpuFanScrewsLoose, A.incorrectScrews, A.looseScrews, A.noScrews, A.scratch " +
+    @Query(value="select C.name, B.cause, B.modelName, A.cpuFanNoScrews, A.cpuFanPortDetached, A.cpuFanScrewsLoose, A.incorrectScrews, A.looseScrews, A.noScrews, A.scratch, B.id " +
             "from " +
             "(select id, name from user) as C, " +
             "(select id, userId, cause, modelName from question) as B, " +

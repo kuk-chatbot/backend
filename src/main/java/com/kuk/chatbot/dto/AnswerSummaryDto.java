@@ -15,8 +15,9 @@ public class AnswerSummaryDto {
     private int looseScrews;
     private int noScrews;
     private int scratch;
+    private int id;
 
-    public AnswerSummaryDto(String name, String cause, String modelName, int cpuFanNoScrews, int cpuFanPortDetached, int cpuFanScrewsLoose, int incorrectScrews, int looseScrews, int noScrews, int scratch){
+    public AnswerSummaryDto(String name, String cause, String modelName, int cpuFanNoScrews, int cpuFanPortDetached, int cpuFanScrewsLoose, int incorrectScrews, int looseScrews, int noScrews, int scratch, int id){
         this.name = name;
         this.cause = cause;
         this.modelName = modelName;
@@ -27,5 +28,6 @@ public class AnswerSummaryDto {
         this.looseScrews = looseScrews;
         this.noScrews = noScrews;
         this.scratch = scratch;
+        this.id = id;
     }
 }

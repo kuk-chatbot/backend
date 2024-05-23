@@ -1,6 +1,7 @@
 package com.kuk.chatbot.service;
 
 import com.kuk.chatbot.dto.AnswerSummaryDto;
+import com.kuk.chatbot.model.Answer;
 import com.kuk.chatbot.model.RoleType;
 import com.kuk.chatbot.model.User;
 import com.kuk.chatbot.repository.AnswerRepository;
@@ -27,6 +28,12 @@ public class SummaryService {
     private UserRepository userRepository;
 
     @Transactional
+    public byte[] 이미지불러오기(int id){
+        Answer answer = answerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid answer id: " + Integer.toString(id)));
+        return answer.getResultImage();
+    }
+
+    @Transactional
     public List<AnswerSummaryDto> 결과요약(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
@@ -45,7 +52,8 @@ public class SummaryService {
                         (Integer) result[6],
                         (Integer) result[7],
                         (Integer) result[8],
-                        (Integer) result[9]
+                        (Integer) result[9],
+                        (Integer) result[10]
                 );
                 summaries.add(dto);
             }
@@ -64,53 +72,12 @@ public class SummaryService {
                     (Integer) result[6],
                     (Integer) result[7],
                     (Integer) result[8],
-                    (Integer) result[9]
+                    (Integer) result[9],
+                    (Integer) result[10]
             );
             summaries.add(dto);
         }
         return summaries;
-
-        /*
-        if(user.getRole().equals(RoleType.PERSONAL))    answers = answerRepository.findByUserId(user.getId());
-        else    answers = answerRepository.findAll();
-
-
-        List<Answer> answers;
-        List<String> result = new ArrayList<>();
-
-        String name = user.getName();
-
-        for(int i=0;i<answers.size();i++){
-            Answer answer = answers.get(i);
-            Question question = answer.getQuestion();
-
-            String cause = question.getCause();
-            String modelname = question.getModelName();
-
-            String temp = "{ \"name\": " + "\"" + name + ", \"cause\": " + cause + ", \"model\": " + modelname;
-
-            int cpuFanNoScrews = answer.getCpuFanNoScrews();
-            temp += ", \"cpuFanNoScrews\": " + Integer.toString(cpuFanNoScrews);
-            int cpuFanPortDetached = answer.getCpuFanPortDetached();
-            temp += ", \"cpuFanPortDetached\": " + Integer.toString(cpuFanPortDetached);
-            int cpuFanScrewsLoose = answer.getCpuFanScrewsLoose();
-            temp += ", \"cpuFanScrewsLoose\": " + Integer.toString(cpuFanScrewsLoose);
-            int incorrectScrews = answer.getIncorrectScrews();
-            temp += ", \"incorrectScrews\": " + Integer.toString(incorrectScrews);
-            int looseScrews = answer.getLooseScrews();
-            temp += ", \"looseScrews\": " + Integer.toString(looseScrews);
-            int noScrews = answer.getNoScrews();
-            temp += ", \"noScrews\": " + Integer.toString(noScrews);
-            int scratch = answer.getScratch();
-            temp += ", \"scratch\": " + Integer.toString(scratch);
-
-
-            result.add(temp);
-
-        }
-        return result;
-
-         */
     }
 
 }
