@@ -42,7 +42,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //csrf 토큰 비활성화 (테스트 시 걸어두는게 좋음)
+        // CSRF 토큰 비활성화 (테스트 시 걸어두는게 좋음)
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(authorize -> authorize
