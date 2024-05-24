@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserApiController {
@@ -31,7 +33,7 @@ public class UserApiController {
         userService.회원가입(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/account")
     public ResponseDto<Integer> accountupdate(@RequestBody User user) {
         System.out.println("UserApiController account 호출");
@@ -42,6 +44,11 @@ public class UserApiController {
 
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
-
-
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/auth/user")
+    public Map<String, String> getUserInfo(Principal principal) {
+        Map<String, String> response = new HashMap<>();
+        response.put("username", principal.getName());
+        return response;
+    }
 }
