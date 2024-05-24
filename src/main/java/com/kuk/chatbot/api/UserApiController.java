@@ -27,8 +27,6 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/auth/sign-up")
@@ -39,23 +37,6 @@ public class UserApiController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("/account")
-    public ResponseDto<Integer> accountUpdate(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody UserEnterpriseDto userEnterpriseDto) {
-        System.out.println("UserApiController account 호출");
-
-        // 현재 인증된 사용자 가져오기
-        User currentUser = principal.getUser();
-        if (currentUser == null) {
-            return new ResponseDto<>(HttpStatus.UNAUTHORIZED.value(), 0);
-        }
-
-        // 사용자 정보 업데이트 (비밀번호는 수정하지 않음)
-        userService.회원수정(currentUser.getId(), userEnterpriseDto.getUserlimit(), userEnterpriseDto.getMemory(), userEnterpriseDto.getCores(), userEnterpriseDto.getSockets());
-
-        return new ResponseDto<>(HttpStatus.OK.value(), 1);
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/auth/user")
     public Map<String, String> getUserInfo(Principal principal) {
         Map<String, String> response = new HashMap<>();
@@ -63,27 +44,4 @@ public class UserApiController {
         return response;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/account")
-    public ResponseEntity<UserDto> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        PrincipalDetail principal = (PrincipalDetail) authentication.getPrincipal();
-        User currentUser = principal.getUser();
-
-        UserDto userDTO = new UserDto(
-                currentUser.getId(),
-                currentUser.getUsername(),
-                currentUser.getName(),
-                currentUser.getRole(),
-                currentUser.getUserlimit(),
-                currentUser.getMemory(),
-                currentUser.getCores(),
-                currentUser.getSockets()
-        );
-
-        return ResponseEntity.ok(userDTO);
-    }
 }
