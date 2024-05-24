@@ -1,4 +1,6 @@
 package com.kuk.chatbot.api;
+
+import com.kuk.chatbot.config.auth.PrincipalDetail;
 import com.kuk.chatbot.dto.ResponseDto;
 import com.kuk.chatbot.model.User;
 import com.kuk.chatbot.service.QuestionService;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,24 +27,23 @@ public class imageApiController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @PostMapping("/upload")
     public ResponseDto<Integer> handleFileUpload(@RequestParam("image") MultipartFile file,
                                                  @RequestParam("modelName") String modelName,
-                                                 @RequestParam("cause") String cause) {  // 매개변수 이름 변경
+                                                 @RequestParam("cause") String cause,
+                                                 @AuthenticationPrincipal PrincipalDetail principal) {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
+            // 현재 인증된 사용자 가져오기
+            User currentUser = principal.getUser();
+            if (currentUser == null) {
+                return new ResponseDto<>(HttpStatus.UNAUTHORIZED.value(), 0);
+            }
 
-            User user = userService.회원찾기(username);
-
-            int questionId = questionService.saveQuestion(file, modelName, cause, user.getId());
-
+            int questionId = questionService.saveQuestion(file, modelName, cause, currentUser.getId());
 
             // 파이썬 스크립트를 실행
-            ProcessBuilder pb = new ProcessBuilder("C:/Users/User/Desktop/capstone/mother_yolov7/yolov7/venv/Scripts/python.exe", "C:/Users/User/Desktop/capstone/mother_yolov7/yolov7/detect.py",
+            ProcessBuilder pb = new ProcessBuilder("C:/Users/User/Desktop/capstone/mother_yolov7/yolov7/venv/Scripts/python.exe",
+                    "C:/Users/User/Desktop/capstone/mother_yolov7/yolov7/detect.py",
                     "--question-id", String.valueOf(questionId),
                     "--weights", "C:/Users/User/Desktop/capstone/mother_yolov7/yolov7/best.pt",
                     "--conf-thres", "0.25",
@@ -59,7 +61,7 @@ public class imageApiController {
 
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+                return new ResponseDto<>(HttpStatus.OK.value(), 1);
             } else {
                 return new ResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), 0);
             }
@@ -69,3 +71,4 @@ public class imageApiController {
         }
     }
 }
+
