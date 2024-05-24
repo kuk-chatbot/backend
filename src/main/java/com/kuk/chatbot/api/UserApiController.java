@@ -1,6 +1,8 @@
 package com.kuk.chatbot.api;
 
+import com.kuk.chatbot.config.auth.PrincipalDetail;
 import com.kuk.chatbot.dto.ResponseDto;
+import com.kuk.chatbot.dto.UserDto;
 import com.kuk.chatbot.model.User;
 import com.kuk.chatbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +46,36 @@ public class UserApiController {
 
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/auth/user")
     public Map<String, String> getUserInfo(Principal principal) {
         Map<String, String> response = new HashMap<>();
         response.put("username", principal.getName());
         return response;
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/account")
+    public ResponseEntity<UserDto> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        PrincipalDetail principal = (PrincipalDetail) authentication.getPrincipal();
+        User currentUser = principal.getUser();
+
+        UserDto userDTO = new UserDto(
+                currentUser.getId(),
+                currentUser.getUsername(),
+                currentUser.getName(),
+                currentUser.getRole(),
+                currentUser.getUserlimit(),
+                currentUser.getMemory(),
+                currentUser.getCores(),
+                currentUser.getSockets()
+        );
+
+        return ResponseEntity.ok(userDTO);
     }
 }

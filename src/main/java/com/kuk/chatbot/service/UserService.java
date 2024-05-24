@@ -21,10 +21,16 @@ public class UserService {
 
     @Transactional
     public void 회원가입(User user){
+        user.setUsername(user.getUsername());
+        user.setName(user.getName());
         String rawPassword = user.getPassword();
         String encPassword = encoder.encode(rawPassword);
         user.setPassword(encPassword);
-        user.setRole(RoleType.PERSONAL);
+        user.setRole(user.getRole());
+        user.setUserlimit(user.getUserlimit());
+        user.setMemory(user.getMemory());
+        user.setCores(user.getCores());
+        user.setSockets(user.getSockets());
         userRepository.save(user);
     }
 
