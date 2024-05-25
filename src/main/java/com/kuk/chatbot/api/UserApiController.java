@@ -1,6 +1,9 @@
 package com.kuk.chatbot.api;
 
+import com.kuk.chatbot.config.auth.PrincipalDetail;
 import com.kuk.chatbot.dto.ResponseDto;
+import com.kuk.chatbot.dto.UserDto;
+import com.kuk.chatbot.dto.UserEnterpriseDto;
 import com.kuk.chatbot.model.User;
 import com.kuk.chatbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +13,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserApiController {
@@ -21,8 +27,6 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/auth/sign-up")
@@ -32,16 +36,12 @@ public class UserApiController {
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
 
-    @PutMapping("/account")
-    public ResponseDto<Integer> accountupdate(@RequestBody User user) {
-        System.out.println("UserApiController account 호출");
-        // 사용자 정보 업데이트
-        userService.회원수정(user);
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/auth/user")
+    public Map<String, String> getUserInfo(Principal principal) {
+        Map<String, String> response = new HashMap<>();
+        response.put("username", principal.getName());
+        return response;
     }
-
 
 }
