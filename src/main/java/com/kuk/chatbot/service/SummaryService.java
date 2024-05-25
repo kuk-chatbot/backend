@@ -34,46 +34,32 @@ public class SummaryService {
     }
 
     @Transactional
-    public List<AnswerSummaryDto> 결과요약(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+    public List<AnswerSummaryDto> 개인결과요약(int userId) {
+        List<Object[]> results = answerRepository.loadSummaryByUserId(userId);
+        return Dto변환(results);
+    }
 
-        if (user.getRole().equals(RoleType.PERSONAL)){
-            List<Object[]> results = answerRepository.loadSummaryByUserId(user.getId());
-            List<AnswerSummaryDto> summaries = new ArrayList<>();
-            for(Object[] result : results){
-                AnswerSummaryDto dto = new AnswerSummaryDto(
-                        (String) result[0],
-                        (String) result[1],
-                        (String) result[2],
-                        (Integer) result[3],
-                        (Integer) result[4],
-                        (Integer) result[5],
-                        (Integer) result[6],
-                        (Integer) result[7],
-                        (Integer) result[8],
-                        (Integer) result[9],
-                        (Integer) result[10]
-                );
-                summaries.add(dto);
-            }
-            return summaries;
-        }
+    @Transactional
+    public List<AnswerSummaryDto> 기업결과요약() {
         List<Object[]> results = answerRepository.loadSummaryAll();
+        return Dto변환(results);
+    }
+
+    private List<AnswerSummaryDto> Dto변환(List<Object[]> results) {
         List<AnswerSummaryDto> summaries = new ArrayList<>();
-        for(Object[] result : results){
+        for (Object[] result : results) {
             AnswerSummaryDto dto = new AnswerSummaryDto(
-                    (String) result[0],
-                    (String) result[1],
-                    (String) result[2],
-                    (Integer) result[3],
-                    (Integer) result[4],
-                    (Integer) result[5],
-                    (Integer) result[6],
-                    (Integer) result[7],
-                    (Integer) result[8],
-                    (Integer) result[9],
-                    (Integer) result[10]
+                    (String) result[0],  // name
+                    (String) result[1],   // cause
+                    (String) result[2],   // modelName
+                    (Integer) result[3],   // cpuFanNoScrews
+                    (Integer) result[4],  // cpuFanPortDetached
+                    (Integer) result[5],  // cpuFanScrewsLoose
+                    (Integer) result[6],  // incorrectScrews
+                    (Integer) result[7],  // looseScrews
+                    (Integer) result[8],  // noScrews
+                    (Integer) result[9],  // scratch
+                    (Integer) result[10]  // id
             );
             summaries.add(dto);
         }
