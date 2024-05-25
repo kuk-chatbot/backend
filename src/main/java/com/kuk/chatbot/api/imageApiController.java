@@ -27,7 +27,7 @@ public class imageApiController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/upload")
+    @PostMapping("/motherboard/upload")
     public ResponseDto<Integer> handleFileUpload(@RequestParam("image") MultipartFile file,
                                                  @RequestParam("modelName") String modelName,
                                                  @RequestParam("cause") String cause,

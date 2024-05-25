@@ -21,7 +21,7 @@ public class AccountApiController {
     private UserService userService;
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/account")
+    @GetMapping("/motherboard/account")
     public ResponseEntity<UserDto> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
@@ -45,7 +45,7 @@ public class AccountApiController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("/account")
+    @PutMapping("/motherboard/account")
     public ResponseDto<Integer> accountUpdate(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody UserEnterpriseDto userEnterpriseDto) {
         System.out.println("UserApiController account 호출");
 
