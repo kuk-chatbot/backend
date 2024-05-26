@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/sign-in", "/auth/sign-up").permitAll()
-                        .requestMatchers("/auth/user","/account").authenticated()
+                        .requestMatchers("/auth/user","/motherboard").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
