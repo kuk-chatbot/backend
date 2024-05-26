@@ -4,6 +4,7 @@ import com.kuk.chatbot.config.auth.PrincipalDetail;
 import com.kuk.chatbot.dto.ResponseDto;
 import com.kuk.chatbot.dto.UserDto;
 import com.kuk.chatbot.dto.UserEnterpriseDto;
+import com.kuk.chatbot.model.RoleType;
 import com.kuk.chatbot.model.User;
 import com.kuk.chatbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,16 @@ public class UserApiController {
         userService.회원가입(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
-
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/auth/user")
-    public Map<String, String> getUserInfo(Principal principal) {
-        Map<String, String> response = new HashMap<>();
-        response.put("username", principal.getName());
-        return response;
+    public ResponseEntity<RoleType> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        PrincipalDetail principal = (PrincipalDetail) authentication.getPrincipal();
+        User currentUser = principal.getUser();
+        return ResponseEntity.ok(currentUser.getRole());
     }
 
 }
