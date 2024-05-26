@@ -22,7 +22,7 @@ public class SummaryApiController {
     private SummaryService summaryService;
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/motherboard/customers")
+    @GetMapping("/motherboard/summary")
     public ResponseEntity<List<AnswerSummaryDto>> summaryForm(@AuthenticationPrincipal PrincipalDetail principal) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -43,7 +43,7 @@ public class SummaryApiController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/motherboard/customers/{id}")
+    @GetMapping("/motherboard/summary/{id}")
     public ResponseEntity<Void> showImageForm(@PathVariable int id, @AuthenticationPrincipal PrincipalDetail principal, HttpServletResponse response) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
