@@ -2,17 +2,16 @@ package com.kuk.chatbot.api;
 
 import com.kuk.chatbot.dto.AnswerSummaryDto;
 import com.kuk.chatbot.service.SummaryService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.kuk.chatbot.config.auth.PrincipalDetail;
 
+import java.io.OutputStream;
 import java.util.Base64;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class SummaryApiController {
     private SummaryService summaryService;
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/motherboard/summary")
+    @GetMapping("/motherboard/customers")
     public ResponseEntity<List<AnswerSummaryDto>> summaryForm(@AuthenticationPrincipal PrincipalDetail principal) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -44,8 +43,8 @@ public class SummaryApiController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/motherboard/summary/{id}")
-    public ResponseEntity<String> showImageForm(@PathVariable int id, @AuthenticationPrincipal PrincipalDetail principal) {
+    @GetMapping("/motherboard/customers/{id}")
+    public ResponseEntity<Void> showImageForm(@PathVariable int id, @AuthenticationPrincipal PrincipalDetail principal, HttpServletResponse response) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -56,8 +55,16 @@ public class SummaryApiController {
         }
 
         String imageBase64 = Base64.getEncoder().encodeToString(result);
-        return new ResponseEntity<>(imageBase64, HttpStatus.OK);
-    }
+        response.setContentType("text/plain");
+        response.setHeader("Transfer-Encoding", "chunked");
 
+        try (OutputStream os = response.getOutputStream()) {
+            os.write(imageBase64.getBytes());
+            os.flush();
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

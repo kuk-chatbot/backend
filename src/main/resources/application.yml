@@ -11,6 +11,9 @@ server:
       cookie:
         http-only: true
         secure: false
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: -1
 
 spring:
   #jsp 파일이 들어오면 기본경로 설정
@@ -45,6 +48,11 @@ spring:
   devtools:
     restart:
       enabled: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 kuk:
   key: chatbot-test
