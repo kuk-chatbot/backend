@@ -26,7 +26,7 @@ public class imageApiController {
 
     @Autowired
     private UserService userService;
-
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @PostMapping("/motherboard/upload")
     public ResponseDto<Integer> handleFileUpload(@RequestParam("image") MultipartFile file,
                                                  @RequestParam("modelName") String modelName,

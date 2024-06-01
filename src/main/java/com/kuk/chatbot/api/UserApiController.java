@@ -29,14 +29,14 @@ public class UserApiController {
     private UserService userService;
 
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @PostMapping("/auth/sign-up")
     public ResponseDto<Integer> save(@RequestBody User user){ //username, password, email
         System.out.println("UserApiController save 호출");
         userService.회원가입(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @GetMapping("/auth/user")
     public ResponseEntity<RoleType> getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

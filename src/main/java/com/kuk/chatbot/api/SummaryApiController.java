@@ -21,7 +21,7 @@ public class SummaryApiController {
     @Autowired
     private SummaryService summaryService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @GetMapping("/motherboard/summary")
     public ResponseEntity<List<AnswerSummaryDto>> summaryForm(@AuthenticationPrincipal PrincipalDetail principal) {
         if (principal == null) {
@@ -42,7 +42,7 @@ public class SummaryApiController {
         return new ResponseEntity<>(summaries, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @GetMapping("/motherboard/summary/{id}")
     public ResponseEntity<Void> showImageForm(@PathVariable int id, @AuthenticationPrincipal PrincipalDetail principal, HttpServletResponse response) {
         if (principal == null) {
@@ -66,5 +66,6 @@ public class SummaryApiController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }

@@ -20,7 +20,7 @@ public class AccountApiController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @GetMapping("/motherboard/account")
     public ResponseEntity<UserDto> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,7 +44,7 @@ public class AccountApiController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://kuk.solution:3000")
     @PutMapping("/motherboard/account")
     public ResponseDto<Integer> accountUpdate(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody UserEnterpriseDto userEnterpriseDto) {
         System.out.println("UserApiController account 호출");

@@ -1,4 +1,4 @@
-package com.kuk.chatbot.controller;
+package com.kuk.chatbot.api;
 
 import com.kuk.chatbot.model.JwtRequest;
 import com.kuk.chatbot.model.JwtResponse;

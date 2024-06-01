@@ -26,4 +26,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
             "(select questionId, cpuFanNoScrews, cpuFanPortDetached, cpuFanScrewsLoose, incorrectScrews, looseScrews, noScrews, scratch from answer) as A " +
             "where C.id = B.userId and B.id = A.questionId", nativeQuery=true)
     List<Object[]> loadSummaryAll();
+
+    @Query("SELECT SUM(a.cpuFan), SUM(a.cpuFanNoScrews), SUM(a.cpuFanPort), SUM(a.cpuFanPortDetached), SUM(a.cpuFanScrews), SUM(a.cpuFanScrewsLoose), SUM(a.incorrectScrews), SUM(a.looseScrews), SUM(a.noScrews), SUM(a.scratch), SUM(a.screws) FROM Answer a")
+    List<Object[]> loadAllFaultsSummary();
 }
