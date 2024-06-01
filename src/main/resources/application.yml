@@ -1,7 +1,7 @@
 server:
   port: 8000
   servlet:
-    #ex) http://localhost:8000/chatbot/http/lombok
+    #ex) http://kuk.solution:8000/chatbot/http/lombok
     context-path: /
     encoding:
       charset: UTF-8

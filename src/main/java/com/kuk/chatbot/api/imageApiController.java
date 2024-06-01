@@ -1,5 +1,7 @@
 package com.kuk.chatbot.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuk.chatbot.config.auth.PrincipalDetail;
 import com.kuk.chatbot.dto.ResponseDto;
 import com.kuk.chatbot.model.User;
@@ -7,8 +9,6 @@ import com.kuk.chatbot.service.QuestionService;
 import com.kuk.chatbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.*;
 
 @RestController
 public class imageApiController {
@@ -26,11 +27,11 @@ public class imageApiController {
 
     @Autowired
     private UserService userService;
+
     @CrossOrigin(origins = "http://kuk.solution:3000")
     @PostMapping("/motherboard/upload")
-    public ResponseDto<Integer> handleFileUpload(@RequestParam("image") MultipartFile file,
-                                                 @RequestParam("modelName") String modelName,
-                                                 @RequestParam("cause") String cause,
+    public ResponseDto<Integer> handleFileUpload(@RequestPart("image") MultipartFile file,
+                                                 @RequestPart("jsonData") String jsonData,
                                                  @AuthenticationPrincipal PrincipalDetail principal) {
         try {
             // 현재 인증된 사용자 가져오기
@@ -38,6 +39,12 @@ public class imageApiController {
             if (currentUser == null) {
                 return new ResponseDto<>(HttpStatus.UNAUTHORIZED.value(), 0);
             }
+
+            // JSON 데이터를 파싱하여 모델명과 원인을 추출
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> data = objectMapper.readValue(jsonData, new TypeReference<Map<String, String>>() {});
+            String modelName = data.get("modelName");
+            String cause = data.get("cause");
 
             int questionId = questionService.saveQuestion(file, modelName, cause, currentUser.getId());
 
@@ -71,4 +78,3 @@ public class imageApiController {
         }
     }
 }
-
